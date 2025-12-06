@@ -1,0 +1,128 @@
+import tkinter as tk
+from tkinter import messagebox
+stack = []
+queue = []
+linked_list = []
+array = []
+
+
+def push_stack():
+    value = entry.get()
+    if value == " ":
+        messagebox.showerror("Error!Please enter a value")
+    else:
+        stack.append(value)
+        update_display(f"Stack: {stack}")
+
+
+def pop_stack():
+    if not stack:
+        messagebox.showerror("Error! Stack is empty")
+    else:
+        stack.pop()
+        update_display(f"Stack: {stack}")
+
+
+def enqueue():
+    value = entry.get()
+    if value == " ":
+        messagebox.showerror("Error!Please enter a value")
+    else:
+        queue.append(value)
+        update_display(f"Queue: {queue}")
+
+
+def dequeue():
+    if not queue:
+        messagebox.showerror("Error!Please enter a value")
+    else:
+        queue.pop(0)
+        update_display(f"Queue: {queue}")
+
+
+def insert():
+    value = entry.get()
+    if value == " ":
+        messagebox.showerror("Error!Please enter a value")
+    else:
+        linked_list.append(value)
+        update_display(f"Linkedlist: {linked_list}")
+
+
+def delete():
+    value = entry.get()
+    if value in linked_list:
+        linked_list.remove(value)
+        update_display(f"Linkedlist: {linked_list}")
+    else:
+        messagebox.showerror("Error!Please enter a value")
+
+
+def sort_array():
+    global array
+    try:
+        array = list(map(int, entry.get().split()))
+        for i in range(len(array)):
+            for j in range(0, len(array)-i-1):
+                if array[j]>array[j+1]:
+                    array[j], array[j+1] = array[j+1],  array[j]
+        update_display(f"SortedArray:{array}")
+        entry.delete(0, tk.END)
+
+    except ValueError:
+        messagebox.showerror("Error!", "Enter space separated numbers")
+
+
+def search_array():
+    if not array:
+        messagebox.showerror("Error!", "Sort array first")
+        return
+    try:
+        key = int(entry.get())
+    except ValueError:
+        messagebox.showerror("Error!", "Enter a valid number to search")
+        return
+    low, high = 0, len(array)-1
+    while low <= high:
+        mid = (low + high)//2
+        if array[mid] == key:
+            messagebox.showinfo("Found", f"Element found at index {mid}")
+            return
+        elif array[mid]<key:
+            low = mid + 1
+        else:
+            high = mid - 1
+    messagebox.showerror("Element not found")
+
+
+def update_display(text):
+    output_label.config(text=text)
+
+
+root = tk.Tk()
+root.title("DSA Mini Toolkit - GUI")
+root.geometry("500x600")
+root.config(bg="#1e1e2f")
+tk.Label(root, text="DSA Mini Toolkit - GUI", font=("Arial", 18, "bold"), bg="#1e1e2f", fg = "white").pack(pady=10)
+entry = tk.Entry(root, font=("Arial", 14), width=25)
+entry.pack(pady=10)
+
+tk.Label(root, text="Stack", font=("Arial", 18, "bold"), bg="#1e1e2f", fg="white").pack()
+tk.Button(root, text="Push", width=15, command=push_stack).pack(pady=4)
+tk.Button(root, text="Pop", width=15, command=pop_stack).pack(pady=4)
+
+tk.Label(root, text="Queue", font=("Arial", 18, "bold"), bg="#1e1e2f", fg="white").pack(pady=5)
+tk.Button(root, text="Enqueue", width=15, command=enqueue).pack(pady=4)
+tk.Button(root, text="Dequeue", width=15, command=dequeue).pack(pady=4)
+
+tk.Label(root, text="LinkedList", font=("Arial", 18, "bold"), bg="#1e1e2f", fg="white").pack(pady=5)
+tk.Button(root, text="Insert", width=15, command=insert).pack(pady=4)
+tk.Button(root, text="Delete", width=15, command=delete).pack(pady=4)
+
+tk.Label(root, text="Sorting & Searching", font=("Arial", 18, "bold"), bg="#1e1e2f", fg="white").pack(pady=10)
+tk.Button(root, text="Bubble sort(Enter number)", width=20, command=sort_array).pack(pady=20)
+tk.Button(root, text="Binary Search", width=36, command=search_array).pack(pady=5)
+
+output_label = tk.Label(root, text="", font=("Arial", 12), bg="#1e1e2f", fg="yellow", wraplength=480)
+output_label.pack(pady=20)
+root.mainloop()
